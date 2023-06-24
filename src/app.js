@@ -11,21 +11,24 @@ const tweets = []
 app.post('/sign-up', (req, res)=>{
     const { username, avatar } = req.body
     const { user } = req.headers
+    console.log(user)
     if(!username || !avatar || typeof username !== "string" || typeof avatar !== "string"){
         res.status(400).send("Todos os campos são obrigatórios!")
     } else{
         users.push({username, avatar})
         res.status(201).send("OK")
+        console.log(users)
     }
 })
 
 app.post('/tweets', (req, res) =>{
     const { tweet } = req.body
     const { user } = req.headers
-    if (users.find(x => x.user === user) && tweet && typeof user === "string" && typeof tweet === "string"){
-        tweets.splice(0,0,{username, tweet})
+    console.log(user)
+    if (users.find(x => x.username === user) && tweet && typeof user === "string" && typeof tweet === "string"){
+        tweets.splice(0,0,{username: user, tweet})
         res.status(201).send("OK")
-    } else if (!users.find(x => x.user === user)){
+    } else if (!users.find(x => x.username === user)){
         res.status(401).send("UNAUTHORIZED")
     } else{
         res.status(400).send("Todos os campos são obrigatórios!")
@@ -34,8 +37,8 @@ app.post('/tweets', (req, res) =>{
 
 app.get('/tweets', (req, res) => {
     function findAang(username){
-        const user = users.find(x => x.username === username)
-        return user.avatar
+        const aang = users.find(x => x.username === username)
+        return aang.avatar
     }
 
     const {page} = req.query
@@ -64,8 +67,8 @@ app.get('/tweets', (req, res) => {
 
 app.get('/tweets/:USERNAME', (req, res) => {
     function findAang(username){
-        const user = users.find(x => x.username === username)
-        return user.avatar
+        const aang = users.find(x => x.username === username)
+        return aang.avatar
     }
 
     const {USERNAME} = req.params
