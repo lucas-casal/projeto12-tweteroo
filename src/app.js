@@ -9,13 +9,12 @@ const users = []
 const tweets = []
 
 app.post('/sign-up', (req, res)=>{
-    const { avatar } = req.body
+    const { username, avatar } = req.body
     const { user } = req.headers
-    if(!user || !avatar || typeof user !== "string" || typeof avatar !== "string"){
+    if(!username || !avatar || typeof username !== "string" || typeof avatar !== "string"){
         res.status(400).send("Todos os campos são obrigatórios!")
     } else{
-        users.push({user, avatar})
-        console.log(typeof user)
+        users.push({username, avatar})
         res.status(201).send("OK")
     }
 })
@@ -24,7 +23,7 @@ app.post('/tweets', (req, res) =>{
     const { tweet } = req.body
     const { user } = req.headers
     if (users.find(x => x.user === user) && tweet && typeof user === "string" && typeof tweet === "string"){
-        tweets.splice(0,0,{user, tweet})
+        tweets.splice(0,0,{username, tweet})
         res.status(201).send("OK")
     } else if (!users.find(x => x.user === user)){
         res.status(401).send("UNAUTHORIZED")
